@@ -1,5 +1,3 @@
---
-
 -- Services
 
 local PlayerService = game:GetService("Players")
