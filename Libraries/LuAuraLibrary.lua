@@ -79,7 +79,7 @@ function WindowClass:NewWindow(Name:string, Version:string, Scale, Custom)
 	NewWindow.Config.DefaultTabIconID = NewWindow.Config.DefaultTabIconID or DefaultCustom.DefaultTabIconID
 	
 	NewWindow.UI.Parent = User.PlayerGui
-	NewWindow.UI.Name = Name.." UI"
+	NewWindow.UI.Name = Name.." Window"
 	NewWindow.UI.IgnoreGuiInset = true
 	NewWindow.UI.ResetOnSpawn = false
 	NewWindow.UI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
