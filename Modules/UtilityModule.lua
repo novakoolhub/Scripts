@@ -99,10 +99,11 @@ end
 
 -- UIObj Functions
 
-function Module.UIObject:Stroke(GuiObject:GuiObject, Thickness:number)
+function Module.UIObject:Stroke(GuiObject:GuiObject, Thickness:number, Color:Color3)
 	local NewStroke = Instance.new("UIStroke", GuiObject)
 	
 	NewStroke.Thickness = Thickness
+	NewStroke.Color = Color
 	
 	return NewStroke
 end
