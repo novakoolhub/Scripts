@@ -53,9 +53,7 @@ local AnimateInfos = {
 
 -- Modules
 
-local Modules = MainModule.Modules
-
-local UtilityModule = require(Modules.UtilityModule)
+local UtilityModule = loadstring(game:HttpGet("https://raw.githubusercontent.com/novakoolhub/Scripts/main/Modules/UtilityModule.lua"))()
 
 
 -- Window Class
