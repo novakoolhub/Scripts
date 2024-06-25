@@ -52,4 +52,9 @@ You can send notifications using the **Notify** method, example:
 Window:Notify("Success", "The UI has loaded successfully.")
 ```
 
-The first argument is the title of the notification, keep in mind that 
+The first argument is the title of the notification, keep in mind that the word "LuAura: " will be behind the title, so the code above will result in the title being "LuAura: Success".
+The second argument is the description of the notification.
+
+## Destroy method
+
+To remove the window completely, use the **Destroy** method, **keep in mind this will only remove the window and wont stop your script.**
