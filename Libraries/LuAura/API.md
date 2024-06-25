@@ -16,7 +16,7 @@ The second argument is the version of the script (this is optional and if set to
 The third argument is the scale of the window (the size of the window will be multiplied by this number),
 The fourth argument is the custom config table, you can change custom settings like:
 
-* Theme: The theme color of the window.
-* Font: The main font of text.
-* DragSmoothness: The smoothness of dragging the frame.
-* DefaultTabIconID: The default tab icon, I recommend not changing this.
+* **Theme:** The theme color of the window.
+* **Font:** The main font of text.
+* **DragSmoothness:** The smoothness of dragging the frame.
+* **DefaultTabIconID:** The default tab icon, I recommend not changing this.
