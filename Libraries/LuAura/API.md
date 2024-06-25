@@ -5,7 +5,7 @@ If you need any help please join our discord server: *https://discord.gg/gucEWAB
 
 ## NewWindow method
 
-To create a new window object, use the NewWindow method, example:
+To create a new window object, use the **NewWindow** method, example:
 
 ``` lua
 local Window = LuAura:NewWindow("Test UI", "2.4", 1.1, {
@@ -35,11 +35,21 @@ The default config settings are:
 
 ## NewTab method
 
-To create a new tab/page object in the window, use the NewTab method, example:
+To create a new tab/page object in the window, use the **NewTab** method, example:
 
 ``` lua
 local Home = Window:NewTab("Home", 17340198495)
 ```
 
 The first argument is the name of the tab/page (this is required),
-The second argument is the tab icon ID (this is optional), make sure you copied the Asset ID correctly, this will overwrite the **DefaultTabIconID** setting.
+The second argument is the tab icon ID (this is optional), make sure you copied the Asset ID correctly, this will overwrite the **DefaultTabIconID**.
+
+## Notify method
+
+You can send notifications using the **Notify** method, example:
+
+``` lua
+Window:Notify("Success", "The UI has loaded successfully.")
+```
+
+The first argument is the title of the notification, keep in mind that 
