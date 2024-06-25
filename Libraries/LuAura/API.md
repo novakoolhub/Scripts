@@ -1,7 +1,7 @@
 Hello, this document will show you how to use the LuAura library.
 If you need any help please join our discord server: *https://discord.gg/gucEWABwKC*
 
-# Window Class
+## Window Class
 
 To create a new window class, use the NewWindow method, example:
 
