@@ -1,5 +1,5 @@
 Hello, this document will show you how to use the LuAura library.
-If you need any help please contact me on discord: *novakool* or join our discord server *https://discord.gg/gucEWABwKC*
+If you need any help please join our discord server *https://discord.gg/gucEWABwKC*
 
 # Window Class
 
