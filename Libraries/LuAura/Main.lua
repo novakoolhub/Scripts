@@ -1,7 +1,7 @@
 --[[
 	Library by Mystery_Mux (novakool on discord).
 	
-	Version: 0.6
+	Version: 0.7
 ]]
 
 local MainModule = script
