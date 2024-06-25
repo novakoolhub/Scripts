@@ -20,3 +20,13 @@ The fourth argument is the custom config table, you can change custom settings l
 * **Font:** The main font of text.
 * **DragSmoothness:** The smoothness of dragging the frame.
 * **DefaultTabIconID:** The default tab icon, I recommend not changing this.
+
+The default config settings are:
+``` lua
+{
+	Theme = Color3.fromRGB(50, 50, 50);
+	Font = "rbxasset://fonts/families/Montserrat.json";
+	DragSmoothness = 50;
+	DefaultTabIconID = 18132434045;
+}
+```
