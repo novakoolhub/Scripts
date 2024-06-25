@@ -95,7 +95,7 @@ function WindowClass:NewWindow(Name:string, Version:string, Scale, Custom)
 	NewWindow.MainFrame.BorderSizePixel = 0
 
 	UtilityModule.Align:CenterAnchor(NewWindow.MainFrame)
-	UtilityModule.UIObject:Scale(NewWindow.MainFrame, Scale)
+	UtilityModule.UIObject:Scale(NewWindow.MainFrame, Scale or 1)
 	UtilityModule.UIObject:Corner(NewWindow.MainFrame, UDim.new(0, 6))
 
 	-- Notification Container --
@@ -1194,7 +1194,7 @@ function TabClass:NewSlider(Name:string, Min:number, Max:number, Steps:number, A
 end
 
 function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
-	local ActionFrame = Instance.new("Frame")
+	local ActionButton = Instance.new("TextButton")
 	local IconImage = Instance.new("ImageLabel")
 	local TitleText = Instance.new("TextLabel")
 	local DropdownButton = Instance.new("TextButton")
@@ -1202,17 +1202,22 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	local DropdownButtonIcon = Instance.new("ImageLabel")
 	local ItemContainer = Instance.new("Frame")
 
+	local Hovering = false
+
 	local DefaultColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(15, 15, 15))
 	local HoverColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(25, 25, 25))
+	local ActivateColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(35, 35, 35))
 
-	ActionFrame.Parent = self.TabPage.ActionContainer
-	ActionFrame.Name = "DropdownAction"
-	ActionFrame.Size = UDim2.fromScale(0.95, 0.2)
-	ActionFrame.ZIndex = 2
-	ActionFrame.BackgroundColor3 = DefaultColor
-	ActionFrame.BorderSizePixel = 0
+	ActionButton.Parent = self.TabPage.ActionContainer
+	ActionButton.Name = "DropdownAction"
+	ActionButton.Size = UDim2.fromScale(0.95, 0.2)
+	ActionButton.ZIndex = 2
+	ActionButton.BackgroundColor3 = DefaultColor
+	ActionButton.BorderSizePixel = 0
+	ActionButton.AutoButtonColor = false
+	ActionButton.Text = ""
 
-	IconImage.Parent = ActionFrame
+	IconImage.Parent = ActionButton
 	IconImage.Name = "ActionIcon"
 	IconImage.Position = UDim2.fromScale(0.02, 0.5)
 	IconImage.Size = UDim2.fromScale(0.05, 0.65)
@@ -1223,7 +1228,7 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	IconImage.ScaleType = Enum.ScaleType.Fit
 	IconImage.ResampleMode = Enum.ResamplerMode.Pixelated
 
-	TitleText.Parent = ActionFrame
+	TitleText.Parent = ActionButton
 	TitleText.Name = "TitleText"
 	TitleText.Position = UDim2.fromScale(0.1, 0.5)
 	TitleText.Size = UDim2.fromScale(0.75, 0.55)
@@ -1239,7 +1244,7 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	local DropdownDefaultColor = self.Config.Theme
 	local DropdownHoverColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(15, 15, 15))
 
-	DropdownButton.Parent = ActionFrame
+	DropdownButton.Parent = ActionButton
 	DropdownButton.Name = "DropdownButton"
 	DropdownButton.Position = UDim2.fromScale(0.675, 0.5)
 	DropdownButton.AnchorPoint = Vector2.new(0, 0.5)
@@ -1310,7 +1315,7 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 		NewItemButton.Activated:Connect(function()
 			DropdownOpen = false
 
-			Action(Item)
+			Action(Item, false)
 
 			DropdownButtonText.Text = Item
 
@@ -1324,16 +1329,40 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 		end)
 	end
 
-	ActionFrame.MouseEnter:Connect(function()
-		TweenService:Create(ActionFrame, AnimateInfos.ActionSelect, {
+	ActionButton.MouseEnter:Connect(function()
+		Hovering = true
+
+		TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = HoverColor;
 		}):Play()
 	end)
 
-	ActionFrame.MouseLeave:Connect(function()
-		TweenService:Create(ActionFrame, AnimateInfos.ActionSelect, {
+	ActionButton.MouseLeave:Connect(function()
+		Hovering = false
+
+		TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = DefaultColor;
 		}):Play()
+	end)
+
+	ActionButton.Activated:Connect(function()
+		Action(DropdownButtonText.Text, true)
+
+		TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
+			BackgroundColor3 = ActivateColor;
+		}):Play()
+
+		task.wait(AnimateInfos.ActionSelect.Time)
+
+		if Hovering == true then
+			TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
+				BackgroundColor3 = HoverColor;
+			}):Play()
+		else
+			TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
+				BackgroundColor3 = DefaultColor;
+			}):Play()
+		end
 	end)
 
 	DropdownButton.MouseEnter:Connect(function()
@@ -1384,7 +1413,7 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 
 	UtilityModule.UIObject:Corner(ItemContainer, UDim.new(0, 4))
 	UtilityModule.UIObject:Corner(DropdownButton, UDim.new(0, 4))
-	UtilityModule.UIObject:Corner(ActionFrame, UDim.new(0, 6))
+	UtilityModule.UIObject:Corner(ActionButton, UDim.new(0, 6))
 	UtilityModule.UIObject:List(ItemContainer, UDim.new(0, 0), Enum.FillDirection.Vertical, "TC")
 end
 
