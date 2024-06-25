@@ -1284,7 +1284,7 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 		local NewItemButton = Instance.new("TextButton")
 
 		NewItemButton.Parent = ItemContainer
-		NewItemButton.Name = Item.." Item"
+		NewItemButton.Name = "ItemButton"
 		NewItemButton.Size = UDim2.new(0.95, 0, 0, 12)
 		NewItemButton.BackgroundColor3 = Color3.new(1, 1, 1)
 		NewItemButton.BackgroundTransparency = 1
