@@ -337,108 +337,6 @@ function WindowClass:NewWindow(Name:string, Version:string, Scale, Custom)
 	return NewWindow
 end
 
-function WindowClass:Notify(Title:string, Description:string, Time:number, Options:string)
-	local NotificationFrame = Instance.new("Frame")
-	local TopBar = Instance.new("Frame")
-	local TitleText = Instance.new("TextLabel")
-	local DescriptionText = Instance.new("TextLabel")
-	local ProgressLine = Instance.new("Frame")
-
-	NotificationFrame.Parent = self.NotificationContainer
-	NotificationFrame.Name = "Notification"
-	NotificationFrame.Position = UDim2.fromScale(1.75, 0.8)
-	NotificationFrame.Size = UDim2.fromScale(1, 0.2)
-	NotificationFrame.AnchorPoint = Vector2.new(0.5, 0)
-	NotificationFrame.BackgroundColor3 = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(-25, -25, -25))
-
-	TopBar.Parent = NotificationFrame
-	TopBar.Name = "TopBar"
-	TopBar.Size = UDim2.fromScale(1, 0.2)
-	TopBar.BackgroundColor3 = self.Config.Theme
-	TopBar.BorderSizePixel = 0
-
-	TitleText.Parent = TopBar
-	TitleText.Name = "TitleText"
-	TitleText.Position = UDim2.fromScale(0.5, 0.5)
-	TitleText.Size = UDim2.fromScale(0.9, 0.75)
-	TitleText.AnchorPoint = Vector2.new(0.5, 0.5)
-	TitleText.BackgroundTransparency = 1
-	TitleText.BorderSizePixel = 0
-	TitleText.TextScaled = true
-	TitleText.TextColor3 = Color3.new(1, 1, 1)
-	TitleText.Text = self.Name..": "..Title
-	TitleText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-
-	DescriptionText.Parent = NotificationFrame
-	DescriptionText.Name = "DescriptionText"
-	DescriptionText.Position = UDim2.fromScale(0.5, 0.3)
-	DescriptionText.Size = UDim2.fromScale(0.9, 0.45)
-	DescriptionText.AnchorPoint = Vector2.new(0.5, 0)
-	DescriptionText.BackgroundTransparency = 1
-	DescriptionText.BorderSizePixel = 0
-	DescriptionText.TextScaled = true
-	DescriptionText.TextColor3 = Color3.new(1, 1, 1)
-	DescriptionText.Text = Description
-	DescriptionText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
-	DescriptionText.TextYAlignment = Enum.TextYAlignment.Top
-
-	ProgressLine.Parent = TopBar
-	ProgressLine.Name = "Line"
-	ProgressLine.Position = UDim2.new(0, 0, 1, -1)
-	ProgressLine.Size = UDim2.new(1, 0, 0, 1)
-	ProgressLine.BackgroundColor3 = Color3.new(1, 1, 1)
-	ProgressLine.BackgroundTransparency = 0.9
-	ProgressLine.BorderSizePixel = 0
-	ProgressLine.ZIndex = 2
-
-	repeat
-		task.wait()
-	until self.NotificationContainer:GetAttribute("Moveable") == true
-
-	task.spawn(function()
-		NotificationFrame:SetAttribute("Moveable", true)
-		self.NotificationContainer:SetAttribute("Moveable", false)
-
-		for NotificationI, Notification in pairs(self.NotificationContainer:GetChildren()) do
-			if Notification:IsA("Frame") and Notification ~= NotificationFrame and Notification:GetAttribute("Moveable") == true then
-				TweenService:Create(Notification, AnimateInfos.Notifcation, {
-					Position = UDim2.fromScale(Notification.Position.X.Scale, Notification.Position.Y.Scale - 0.25);
-				}):Play()
-			end
-		end
-
-		task.wait(AnimateInfos.Notifcation.Time / 2)
-
-		TweenService:Create(NotificationFrame, AnimateInfos.Notifcation, {
-			Position = UDim2.fromScale(0.5, 0.8);
-		}):Play()
-
-		task.wait(AnimateInfos.Notifcation.Time)
-
-		self.NotificationContainer:SetAttribute("Moveable", true)
-
-		TweenService:Create(ProgressLine, TweenInfo.new(Time or 3, Enum.EasingStyle.Linear), {
-			Size = UDim2.new(0, 0, 0, 1);
-		}):Play()
-
-		task.wait(Time or 3)
-
-		NotificationFrame:SetAttribute("Moveable", false)
-
-		TweenService:Create(NotificationFrame, AnimateInfos.Notifcation, {
-			Position = UDim2.fromScale(1.75, NotificationFrame.Position.Y.Scale);
-		}):Play()
-
-		task.wait(AnimateInfos.Notifcation.Time)
-
-		NotificationFrame:Destroy()
-	end)
-
-	UtilityModule.UIObject:TextSizeClamp(DescriptionText, 1, 12)
-	UtilityModule.UIObject:Corner(TopBar, UDim.new(0, 6), "BR/BL")
-	UtilityModule.UIObject:Corner(NotificationFrame, UDim.new(0, 6))
-end
-
 function WindowClass:NewTab(Name:string, IconID:number)
 	local NewTab = setmetatable({}, TabClass)
 	NewTab.TabButton = Instance.new("TextButton")
@@ -616,6 +514,108 @@ function WindowClass:NewTab(Name:string, IconID:number)
 	return NewTab
 end
 
+function WindowClass:Notify(Title:string, Description:string, Time:number, Options:string)
+	local NotificationFrame = Instance.new("Frame")
+	local TopBar = Instance.new("Frame")
+	local TitleText = Instance.new("TextLabel")
+	local DescriptionText = Instance.new("TextLabel")
+	local ProgressLine = Instance.new("Frame")
+
+	NotificationFrame.Parent = self.NotificationContainer
+	NotificationFrame.Name = "Notification"
+	NotificationFrame.Position = UDim2.fromScale(1.75, 0.8)
+	NotificationFrame.Size = UDim2.fromScale(1, 0.2)
+	NotificationFrame.AnchorPoint = Vector2.new(0.5, 0)
+	NotificationFrame.BackgroundColor3 = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(-25, -25, -25))
+
+	TopBar.Parent = NotificationFrame
+	TopBar.Name = "TopBar"
+	TopBar.Size = UDim2.fromScale(1, 0.2)
+	TopBar.BackgroundColor3 = self.Config.Theme
+	TopBar.BorderSizePixel = 0
+
+	TitleText.Parent = TopBar
+	TitleText.Name = "TitleText"
+	TitleText.Position = UDim2.fromScale(0.5, 0.5)
+	TitleText.Size = UDim2.fromScale(0.9, 0.75)
+	TitleText.AnchorPoint = Vector2.new(0.5, 0.5)
+	TitleText.BackgroundTransparency = 1
+	TitleText.BorderSizePixel = 0
+	TitleText.TextScaled = true
+	TitleText.TextColor3 = Color3.new(1, 1, 1)
+	TitleText.Text = self.Name..": "..Title
+	TitleText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+
+	DescriptionText.Parent = NotificationFrame
+	DescriptionText.Name = "DescriptionText"
+	DescriptionText.Position = UDim2.fromScale(0.5, 0.3)
+	DescriptionText.Size = UDim2.fromScale(0.9, 0.45)
+	DescriptionText.AnchorPoint = Vector2.new(0.5, 0)
+	DescriptionText.BackgroundTransparency = 1
+	DescriptionText.BorderSizePixel = 0
+	DescriptionText.TextScaled = true
+	DescriptionText.TextColor3 = Color3.new(1, 1, 1)
+	DescriptionText.Text = Description
+	DescriptionText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+	DescriptionText.TextYAlignment = Enum.TextYAlignment.Top
+
+	ProgressLine.Parent = TopBar
+	ProgressLine.Name = "Line"
+	ProgressLine.Position = UDim2.new(0, 0, 1, -1)
+	ProgressLine.Size = UDim2.new(1, 0, 0, 1)
+	ProgressLine.BackgroundColor3 = Color3.new(1, 1, 1)
+	ProgressLine.BackgroundTransparency = 0.9
+	ProgressLine.BorderSizePixel = 0
+	ProgressLine.ZIndex = 2
+
+	repeat
+		task.wait()
+	until self.NotificationContainer:GetAttribute("Moveable") == true
+
+	task.spawn(function()
+		NotificationFrame:SetAttribute("Moveable", true)
+		self.NotificationContainer:SetAttribute("Moveable", false)
+
+		for NotificationI, Notification in pairs(self.NotificationContainer:GetChildren()) do
+			if Notification:IsA("Frame") and Notification ~= NotificationFrame and Notification:GetAttribute("Moveable") == true then
+				TweenService:Create(Notification, AnimateInfos.Notifcation, {
+					Position = UDim2.fromScale(Notification.Position.X.Scale, Notification.Position.Y.Scale - 0.25);
+				}):Play()
+			end
+		end
+
+		task.wait(AnimateInfos.Notifcation.Time / 2)
+
+		TweenService:Create(NotificationFrame, AnimateInfos.Notifcation, {
+			Position = UDim2.fromScale(0.5, 0.8);
+		}):Play()
+
+		task.wait(AnimateInfos.Notifcation.Time)
+
+		self.NotificationContainer:SetAttribute("Moveable", true)
+
+		TweenService:Create(ProgressLine, TweenInfo.new(Time or 3, Enum.EasingStyle.Linear), {
+			Size = UDim2.new(0, 0, 0, 1);
+		}):Play()
+
+		task.wait(Time or 3)
+
+		NotificationFrame:SetAttribute("Moveable", false)
+
+		TweenService:Create(NotificationFrame, AnimateInfos.Notifcation, {
+			Position = UDim2.fromScale(1.75, NotificationFrame.Position.Y.Scale);
+		}):Play()
+
+		task.wait(AnimateInfos.Notifcation.Time)
+
+		NotificationFrame:Destroy()
+	end)
+
+	UtilityModule.UIObject:TextSizeClamp(DescriptionText, 1, 12)
+	UtilityModule.UIObject:Corner(TopBar, UDim.new(0, 6), "BR/BL")
+	UtilityModule.UIObject:Corner(NotificationFrame, UDim.new(0, 6))
+end
+
 function WindowClass:Destroy()
 	self.UI:Destroy()
 
@@ -623,48 +623,6 @@ function WindowClass:Destroy()
 end
 
 -- Tab Class
-
-function TabClass:NewGap(Length)
-	local ActionFrame = Instance.new("Frame")
-
-	ActionFrame.Parent = self.TabPage.ActionContainer
-	ActionFrame.Name = "GapFrame"
-	ActionFrame.Size = UDim2.new(1, 0, 0, Length)
-	ActionFrame.BackgroundTransparency = 1
-	ActionFrame.BorderSizePixel = 0
-end
-
-function TabClass:NewHint(Hint:string)
-	local ActionText = Instance.new("TextLabel")
-
-	ActionText.Parent = self.TabPage.ActionContainer
-	ActionText.Name = "HintText"
-	ActionText.Size = UDim2.fromScale(1, 0.1)
-	ActionText.BackgroundTransparency = 1
-	ActionText.BorderSizePixel = 0
-	ActionText.TextScaled = true
-	ActionText.TextColor3 = Color3.new(1, 1, 1)
-	ActionText.TextTransparency = 0.25
-	ActionText.Text = Hint
-	ActionText.TextXAlignment = Enum.TextXAlignment.Left
-	ActionText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-end
-
-function TabClass:NewSection(Name:string)
-	local ActionText = Instance.new("TextLabel")
-
-	ActionText.Parent = self.TabPage.ActionContainer
-	ActionText.Name = Name.." Section"
-	ActionText.Size = UDim2.fromScale(1, 0.1)
-	ActionText.BackgroundTransparency = 1
-	ActionText.BorderSizePixel = 0
-	ActionText.TextScaled = true
-	ActionText.TextColor3 = Color3.new(1, 1, 1)
-	ActionText.TextTransparency = 0.5
-	ActionText.Text = "-- "..Name.." --"
-	ActionText.TextXAlignment = Enum.TextXAlignment.Left
-	ActionText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
-end
 
 function TabClass:NewButton(Name:string, Action)
 	local ActionButton = Instance.new("TextButton")
@@ -1656,6 +1614,48 @@ function TabClass:NewColorWheel(Name:string, Action)
 	UtilityModule.UIObject:Stroke(WheelPicker, 1, StrokeColor)
 	UtilityModule.UIObject:Corner(WheelPicker, UDim.new(1, 0))
 	UtilityModule.UIObject:Corner(ActionButton, UDim.new(0, 6))
+end
+
+function TabClass:NewSection(Name:string)
+	local ActionText = Instance.new("TextLabel")
+
+	ActionText.Parent = self.TabPage.ActionContainer
+	ActionText.Name = Name.." Section"
+	ActionText.Size = UDim2.fromScale(1, 0.1)
+	ActionText.BackgroundTransparency = 1
+	ActionText.BorderSizePixel = 0
+	ActionText.TextScaled = true
+	ActionText.TextColor3 = Color3.new(1, 1, 1)
+	ActionText.TextTransparency = 0.5
+	ActionText.Text = "-- "..Name.." --"
+	ActionText.TextXAlignment = Enum.TextXAlignment.Left
+	ActionText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+end
+
+function TabClass:NewHint(Hint:string)
+	local ActionText = Instance.new("TextLabel")
+
+	ActionText.Parent = self.TabPage.ActionContainer
+	ActionText.Name = "HintText"
+	ActionText.Size = UDim2.fromScale(1, 0.1)
+	ActionText.BackgroundTransparency = 1
+	ActionText.BorderSizePixel = 0
+	ActionText.TextScaled = true
+	ActionText.TextColor3 = Color3.new(1, 1, 1)
+	ActionText.TextTransparency = 0.25
+	ActionText.Text = Hint
+	ActionText.TextXAlignment = Enum.TextXAlignment.Left
+	ActionText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+end
+
+function TabClass:NewGap(Length)
+	local ActionFrame = Instance.new("Frame")
+
+	ActionFrame.Parent = self.TabPage.ActionContainer
+	ActionFrame.Name = "GapFrame"
+	ActionFrame.Size = UDim2.new(1, 0, 0, Length)
+	ActionFrame.BackgroundTransparency = 1
+	ActionFrame.BorderSizePixel = 0
 end
 
 -- Deprecated methods
