@@ -1284,6 +1284,13 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 			TweenService:Create(DropdownButtonIcon, AnimateInfos.DropdownContainer, {
 				Rotation = 0;
 			}):Play()
+
+			task.spawn(function()
+				task.wait(AnimateInfos.DropdownContainer.Time)
+
+				ActionButton.ZIndex = 1
+				ItemContainer.ZIndex = 1
+			end)
 		end)
 	end
 
@@ -1347,6 +1354,9 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 		if DropdownOpen == false then
 			DropdownOpen = true
 
+			ActionButton.ZIndex = 10
+			ItemContainer.ZIndex = 10
+
 			local OffsetY = (#ItemContainer:GetChildren() - 2) * 12.25
 
 			TweenService:Create(ItemContainer, AnimateInfos.DropdownContainer, {
@@ -1366,6 +1376,13 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 			TweenService:Create(DropdownButtonIcon, AnimateInfos.DropdownContainer, {
 				Rotation = 0;
 			}):Play()
+
+			task.spawn(function()
+				task.wait(AnimateInfos.DropdownContainer.Time)
+
+				ActionButton.ZIndex = 1
+				ItemContainer.ZIndex = 1
+			end)
 		end
 	end)
 
