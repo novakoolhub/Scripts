@@ -111,9 +111,9 @@ The first argument of the function will return the new state of the toggle.
 To create a new input action in a tab, use the **NewInput** method, example:
 
 ``` lua
-Tab:NewInput("Get string length.", false, function(Value, Entered)
+Tab:NewInput("Chat message", false, function(Value, Entered)
 	if Entered == true then
-		Window:Notify("Print", "The string provided is "..#Value.." letters long.")
+		game.Players.LocalPlayer:Chat(Value)
 	end
 end)
 ```
@@ -144,3 +144,96 @@ the fourth argument is the amount of steps on the slider, meaning if you set thi
 the fifth argument is the function that will be executed when ever the slider value changes.
 
 The first argument of the function will return the value of the slider.
+
+## NewDropdown method
+
+To create a new dropdown action in a tab, use the **NewDropdown** method, example:
+
+``` lua
+Tab:NewDropdown("Teleport to place", {"Home", "Island", "Forest"}, nil, function(Item, Clicked)
+	local RootPart = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+
+	if Clicked == false then
+		if Item == "Home" then
+			Window:Notify("Teleport", "Home has been selected.")
+		elseif Item == "Island" then
+			Window:Notify("Teleport", "Island has been selected.")
+		elseif Item == "Forest" then
+			Window:Notify("Teleport", "Forest has been selected.")
+		end
+	elseif Clicked == true then
+		if Item == "Home" then
+			RootPart.CFrame = CFrame.new(216, 172, 624)
+		elseif Item == "Island" then
+			RootPart.CFrame = CFrame.new(472, 563, 182)
+		elseif Item == "Forest" then
+			RootPart.CFrame = CFrame.new(1728, 192, 56)
+		end
+	end
+end)
+```
+
+The first argument is the name/title of the action,
+the second argument is all the items/things that can be selected,
+the third argument is the default item/thing selected (if set to nil then the selected will be "None"),
+the fourth argument is the function that will be executed when clicking the frame or when selecting an item/thing.
+
+The first argument of the function will return what item/thing has been selected,
+the second argument of the function will return whether the frame has been clicked or an item/thing has been selected (if its true, then the frame has been clicked, if its false, then an item has been selected).
+
+## NewColorWheel method
+
+To create a new color wheel in a tab, use the **NewColorWheel** method, example:
+
+``` lua
+Home:NewColorWheel("Change head color", function(Color)
+	local Head = game.Players.LocalPlayer.Character:FindFirstChild("Head")
+
+	Head.Color = Color
+end)
+```
+
+The first argument is the name/title of the action,
+the second argument is the function that will be executed when the color changes.
+
+the first argument of the function will return the color of the wheel.
+
+**This method is limited currently and may get an update in the future.**
+
+## NewSection method
+
+To create a new section/divider in a tab, use the **NewSection** method, example:
+
+``` lua
+Tab:NewSection("Other")
+```
+
+The first argument is the section name.
+
+**The section name will be between "--", for example: "-- Other --"**.
+
+## NewHint method
+
+To create a new hint in a tab, use the **NewHint** method, example:
+
+``` lua
+Tab:NewHint("Library made by Mystery_Mux (novakool on discord).")
+```
+
+The first argument is the hint text.
+
+**Note: a hint is like a section/divider but without the "--"**
+
+## NewGap method
+
+To create a new gap to divide actions in a tab, use the **NewGap** method, example:
+
+``` lua
+Tab:NewGap(10)
+```
+
+The first argument is the length of the gap.
+
+# Notes
+
+There may be some bugs with my library, and some methods have been deprecated and removed like the **NewColorPicker** method.
