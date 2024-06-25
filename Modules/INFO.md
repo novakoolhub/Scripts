@@ -1,3 +1,3 @@
 # Modules
 
-I will be uploading my lua modules here.
+I will be posting my roblox FE modules here, some variables and functions have weird names.
