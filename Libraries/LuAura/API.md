@@ -4,7 +4,8 @@ If you need any help please join our discord server: *https://discord.gg/gucEWAB
 # Window Class
 
 To create a new window class, use the NewWindow method, example:
-```
+
+``` lua
 local Window = LuAura:NewWindow("Test", "0.11", 1.1, {
 	DragSmoothness = 25;
 })
