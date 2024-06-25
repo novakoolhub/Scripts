@@ -1,3 +1,3 @@
 # Modules
 
-I will be posting my modules here, if you need help please contact me on discord, *novakool*
+I will be uploading my lua modules here.
