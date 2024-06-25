@@ -33,4 +33,13 @@ The default config settings are:
 }
 ```
 
-# 
+## NewTab method
+
+To create a new tab/page in the window, use the NewTab method, example:
+
+``` lua
+local Home = Window:NewTab("Home", 17340198495)
+```
+
+The first argument is the name of the tab/page (this is required),
+The second argument is the tab icon ID (this is optional), make sure you copied the Asset ID correctly, this will overwrite the **DefaultTabIconID** setting.
