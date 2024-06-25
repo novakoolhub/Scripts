@@ -14,6 +14,7 @@ The first argument is the name of the window, this is required.
 The second argument is the version of the script, this is optional and if set to nil will remove the version text.
 The third argument is the scale of the window, the size of the window will be multiplied by this number.
 The fourth argument is the custom config table, you can change custom settings from here like:
+
 **1.** Theme: The theme of the window.
 **2.** Font: The main font.
 **3.** DragSmoothness: The smoothness of dragging the frame.
