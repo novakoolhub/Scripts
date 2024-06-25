@@ -3,6 +3,8 @@ If you need any help please join our discord server: *https://discord.gg/gucEWAB
 
 # Window Class
 
+## NewWindow method
+
 To create a new window class, use the NewWindow method, example:
 
 ``` lua
@@ -30,3 +32,5 @@ The default config settings are:
 	DefaultTabIconID = 18132434045;
 }
 ```
+
+# 
