@@ -8,7 +8,7 @@ If you need any help please join our discord server: *https://discord.gg/gucEWAB
 To create a new window object, use the NewWindow method, example:
 
 ``` lua
-local Window = LuAura:NewWindow("Name", "0.11", 1.1, {
+local Window = LuAura:NewWindow("Test UI", "0.11", 1.1, {
 	DragSmoothness = 25;
 })
 ```
