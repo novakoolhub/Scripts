@@ -147,10 +147,10 @@ The first argument of the function will return the value of the slider.
 
 ## NewDropdown method
 
-To create a new dropdown action in a tab, use the **NewDropdown** method, example:
+To create a new dropdown object in a tab, use the **NewDropdown** method, example:
 
 ``` lua
-Tab:NewDropdown("Teleport to place", {"Home", "Island", "Forest"}, nil, function(Item, Clicked)
+local Dropdown = Tab:NewDropdown("Teleport to place", {"Home", "Island", "Forest"}, nil, function(Item, Clicked)
 	local RootPart = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 
 	if Clicked == false then
@@ -233,6 +233,45 @@ Tab:NewGap(10)
 ```
 
 The first argument is the length of the gap.
+
+# DropdownClass
+
+## ChangeItems method
+
+To change dropdown items, use the **ChangeItems** method, example:
+
+``` lua
+Dropdown:ChangeItems({
+	"Change 1";
+	"Change 2";
+	"Change 3";
+})
+```
+
+First argument is the new items table.
+
+## AddItem method
+
+To add a new item to the dropdown, use the **AddItem** method, example:
+
+``` lua
+Dropdown:AddItem("New Item")
+```
+
+First argument is the new item name.
+
+## RemoveItem method
+
+To remove an item in the dropdown, use the **RemoveItem** method, example:
+
+``` lua
+Dropdown:RemoveItem("New Item") -- Removes item called 'New Item'
+Dropdown:RemoveItem(1) -- Removes first item
+```
+
+First argument can be either a number or a string,
+if it's a number then its going to remove the item with that index,
+if it's a string then its going to remove the item named with that string.
 
 # Notes
 
