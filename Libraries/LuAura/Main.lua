@@ -1,7 +1,7 @@
 --[[
 	Library by Mystery_Mux (novakool on discord).
 	
-	Version: 0.7
+	Version: 0.6
 ]]
 
 local MainModule = script
@@ -10,9 +10,14 @@ local WindowClass = {}
 
 local TabClass = {}
 
+local DropdownClass = {}
+
 WindowClass.__index = WindowClass
 
 TabClass.__index = TabClass
+
+DropdownClass.__index = DropdownClass
+
 
 -- Services
 
@@ -1152,13 +1157,16 @@ function TabClass:NewSlider(Name:string, Min:number, Max:number, Steps:number, A
 end
 
 function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
-	local ActionButton = Instance.new("TextButton")
-	local IconImage = Instance.new("ImageLabel")
-	local TitleText = Instance.new("TextLabel")
-	local DropdownButton = Instance.new("TextButton")
+	local NewDropdown = setmetatable({}, DropdownClass)
+
+	NewDropdown.DropdownAction = Action
+	NewDropdown.ActionButton = Instance.new("TextButton")
+	NewDropdown.DropdownButton = Instance.new("TextButton")
+	NewDropdown.Config = self.Config
+
 	local DropdownButtonText = Instance.new("TextLabel")
 	local DropdownButtonIcon = Instance.new("ImageLabel")
-	local ItemContainer = Instance.new("Frame")
+	NewDropdown.ItemContainer = Instance.new("Frame")
 
 	local Hovering = false
 
@@ -1166,16 +1174,19 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	local HoverColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(25, 25, 25))
 	local ActivateColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(35, 35, 35))
 
-	ActionButton.Parent = self.TabPage.ActionContainer
-	ActionButton.Name = "DropdownAction"
-	ActionButton.Size = UDim2.fromScale(0.95, 0.2)
-	ActionButton.ZIndex = 2
-	ActionButton.BackgroundColor3 = DefaultColor
-	ActionButton.BorderSizePixel = 0
-	ActionButton.AutoButtonColor = false
-	ActionButton.Text = ""
+	NewDropdown.ActionButton.Parent = self.TabPage.ActionContainer
+	NewDropdown.ActionButton.Name = "DropdownAction"
+	NewDropdown.ActionButton.Size = UDim2.fromScale(0.95, 0.2)
+	NewDropdown.ActionButton.ZIndex = 2
+	NewDropdown.ActionButton.BackgroundColor3 = DefaultColor
+	NewDropdown.ActionButton.BorderSizePixel = 0
+	NewDropdown.ActionButton.AutoButtonColor = false
+	NewDropdown.ActionButton.Text = ""
 
-	IconImage.Parent = ActionButton
+	local IconImage = Instance.new("ImageLabel")
+	local TitleText = Instance.new("TextLabel")
+
+	IconImage.Parent = NewDropdown.ActionButton
 	IconImage.Name = "ActionIcon"
 	IconImage.Position = UDim2.fromScale(0.02, 0.5)
 	IconImage.Size = UDim2.fromScale(0.05, 0.65)
@@ -1186,7 +1197,7 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	IconImage.ScaleType = Enum.ScaleType.Fit
 	IconImage.ResampleMode = Enum.ResamplerMode.Pixelated
 
-	TitleText.Parent = ActionButton
+	TitleText.Parent = NewDropdown.ActionButton
 	TitleText.Name = "TitleText"
 	TitleText.Position = UDim2.fromScale(0.1, 0.5)
 	TitleText.Size = UDim2.fromScale(0.75, 0.55)
@@ -1202,17 +1213,17 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	local DropdownDefaultColor = self.Config.Theme
 	local DropdownHoverColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(15, 15, 15))
 
-	DropdownButton.Parent = ActionButton
-	DropdownButton.Name = "DropdownButton"
-	DropdownButton.Position = UDim2.fromScale(0.675, 0.5)
-	DropdownButton.AnchorPoint = Vector2.new(0, 0.5)
-	DropdownButton.Size = UDim2.fromScale(0.3, 0.65)
-	DropdownButton.BackgroundColor3 = self.Config.Theme
-	DropdownButton.BorderSizePixel = 0
-	DropdownButton.AutoButtonColor = false
-	DropdownButton.Text = ""
+	NewDropdown.DropdownButton.Parent = NewDropdown.ActionButton
+	NewDropdown.DropdownButton.Name = "DropdownButton"
+	NewDropdown.DropdownButton.Position = UDim2.fromScale(0.675, 0.5)
+	NewDropdown.DropdownButton.AnchorPoint = Vector2.new(0, 0.5)
+	NewDropdown.DropdownButton.Size = UDim2.fromScale(0.3, 0.65)
+	NewDropdown.DropdownButton.BackgroundColor3 = self.Config.Theme
+	NewDropdown.DropdownButton.BorderSizePixel = 0
+	NewDropdown.DropdownButton.AutoButtonColor = false
+	NewDropdown.DropdownButton.Text = ""
 
-	DropdownButtonText.Parent = DropdownButton
+	DropdownButtonText.Parent = NewDropdown.DropdownButton
 	DropdownButtonText.Name = "ItemText"
 	DropdownButtonText.Position = UDim2.fromScale(0.05, 0.5)
 	DropdownButtonText.AnchorPoint = Vector2.new(0, 0.5)
@@ -1224,7 +1235,7 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	DropdownButtonText.TextXAlignment = Enum.TextXAlignment.Left
 	DropdownButtonText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 
-	DropdownButtonIcon.Parent = DropdownButton
+	DropdownButtonIcon.Parent = NewDropdown.DropdownButton
 	DropdownButtonIcon.Name = "DropdownIcon"
 	DropdownButtonIcon.Position = UDim2.fromScale(0.85, 0.5)
 	DropdownButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
@@ -1233,20 +1244,20 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	DropdownButtonIcon.BorderSizePixel = 0
 	DropdownButtonIcon.Image = "rbxassetid://17352538452"
 
-	local DropdownOpen = false
+	NewDropdown.DropdownOpen = false
 
-	ItemContainer.Parent = DropdownButton
-	ItemContainer.Name = "ItemContainer"
-	ItemContainer.Position = UDim2.fromScale(0, 0.85)
-	ItemContainer.Size = UDim2.fromScale(1, 0)
-	ItemContainer.ClipsDescendants = true
-	ItemContainer.BorderSizePixel = 0
-	ItemContainer.BackgroundColor3 = self.Config.Theme
+	NewDropdown.ItemContainer.Parent = NewDropdown.DropdownButton
+	NewDropdown.ItemContainer.Name = "ItemContainer"
+	NewDropdown.ItemContainer.Position = UDim2.fromScale(0, 0.85)
+	NewDropdown.ItemContainer.Size = UDim2.fromScale(1, 0)
+	NewDropdown.ItemContainer.ClipsDescendants = true
+	NewDropdown.ItemContainer.BorderSizePixel = 0
+	NewDropdown.ItemContainer.BackgroundColor3 = self.Config.Theme
 
 	for ItemI, Item in pairs(Items) do
 		local NewItemButton = Instance.new("TextButton")
 
-		NewItemButton.Parent = ItemContainer
+		NewItemButton.Parent = NewDropdown.ItemContainer
 		NewItemButton.Name = "ItemButton"
 		NewItemButton.Size = UDim2.new(0.95, 0, 0, 12)
 		NewItemButton.BackgroundColor3 = Color3.new(1, 1, 1)
@@ -1271,13 +1282,13 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 		end)
 
 		NewItemButton.Activated:Connect(function()
-			DropdownOpen = false
+			NewDropdown.DropdownOpen = false
 
 			Action(Item, false)
 
 			DropdownButtonText.Text = Item
 
-			TweenService:Create(ItemContainer, AnimateInfos.DropdownContainer, {
+			TweenService:Create(NewDropdown.ItemContainer, AnimateInfos.DropdownContainer, {
 				Size = UDim2.fromScale(1, 0);
 			}):Play()
 
@@ -1288,78 +1299,78 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 			task.spawn(function()
 				task.wait(AnimateInfos.DropdownContainer.Time)
 
-				ActionButton.ZIndex = 1
-				ItemContainer.ZIndex = 1
+				NewDropdown.ActionButton.ZIndex = 1
+				NewDropdown.ItemContainer.ZIndex = 1
 			end)
 		end)
 	end
 
-	ActionButton.MouseEnter:Connect(function()
+	NewDropdown.ActionButton.MouseEnter:Connect(function()
 		Hovering = true
 
-		TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
+		TweenService:Create(NewDropdown.ActionButton, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = HoverColor;
 		}):Play()
 	end)
 
-	ActionButton.MouseLeave:Connect(function()
+	NewDropdown.ActionButton.MouseLeave:Connect(function()
 		Hovering = false
 
-		TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
+		TweenService:Create(NewDropdown.ActionButton, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = DefaultColor;
 		}):Play()
 	end)
 
-	ActionButton.Activated:Connect(function()
+	NewDropdown.ActionButton.Activated:Connect(function()
 		Action(DropdownButtonText.Text, true)
 
-		TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
+		TweenService:Create(NewDropdown.ActionButton, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = ActivateColor;
 		}):Play()
 
 		task.wait(AnimateInfos.ActionSelect.Time)
 
 		if Hovering == true then
-			TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
+			TweenService:Create(NewDropdown.ActionButton, AnimateInfos.ActionSelect, {
 				BackgroundColor3 = HoverColor;
 			}):Play()
 		else
-			TweenService:Create(ActionButton, AnimateInfos.ActionSelect, {
+			TweenService:Create(NewDropdown.ActionButton, AnimateInfos.ActionSelect, {
 				BackgroundColor3 = DefaultColor;
 			}):Play()
 		end
 	end)
 
-	DropdownButton.MouseEnter:Connect(function()
-		TweenService:Create(DropdownButton, AnimateInfos.ActionSelect, {
+	NewDropdown.DropdownButton.MouseEnter:Connect(function()
+		TweenService:Create(NewDropdown.DropdownButton, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = DropdownHoverColor;
 		}):Play()
 
-		TweenService:Create(ItemContainer, AnimateInfos.ActionSelect, {
+		TweenService:Create(NewDropdown.ItemContainer, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = DropdownHoverColor;
 		}):Play()
 	end)
 
-	DropdownButton.MouseLeave:Connect(function()
-		TweenService:Create(DropdownButton, AnimateInfos.ActionSelect, {
+	NewDropdown.DropdownButton.MouseLeave:Connect(function()
+		TweenService:Create(NewDropdown.DropdownButton, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = DropdownDefaultColor;
 		}):Play()
 
-		TweenService:Create(ItemContainer, AnimateInfos.ActionSelect, {
+		TweenService:Create(NewDropdown.ItemContainer, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = DropdownDefaultColor;
 		}):Play()
 	end)
 
-	DropdownButton.Activated:Connect(function()
-		if DropdownOpen == false then
-			DropdownOpen = true
+	NewDropdown.DropdownButton.Activated:Connect(function()
+		if NewDropdown.DropdownOpen == false then
+			NewDropdown.DropdownOpen = true
 
-			ActionButton.ZIndex = 10
-			ItemContainer.ZIndex = 10
+			NewDropdown.ActionButton.ZIndex = 10
+			NewDropdown.ItemContainer.ZIndex = 10
 
-			local OffsetY = (#ItemContainer:GetChildren() - 2) * 12.25
+			local OffsetY = (#NewDropdown.ItemContainer:GetChildren() - 2) * 12.25
 
-			TweenService:Create(ItemContainer, AnimateInfos.DropdownContainer, {
+			TweenService:Create(NewDropdown.ItemContainer, AnimateInfos.DropdownContainer, {
 				Size = UDim2.new(1, 0, 0, OffsetY);
 			}):Play()
 
@@ -1367,9 +1378,9 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 				Rotation = 180;
 			}):Play()
 		else
-			DropdownOpen = false
+			NewDropdown.DropdownOpen = false
 
-			TweenService:Create(ItemContainer, AnimateInfos.DropdownContainer, {
+			TweenService:Create(NewDropdown.ItemContainer, AnimateInfos.DropdownContainer, {
 				Size = UDim2.fromScale(1, 0);
 			}):Play()
 
@@ -1380,16 +1391,18 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 			task.spawn(function()
 				task.wait(AnimateInfos.DropdownContainer.Time)
 
-				ActionButton.ZIndex = 1
-				ItemContainer.ZIndex = 1
+				NewDropdown.ActionButton.ZIndex = 1
+				NewDropdown.ItemContainer.ZIndex = 1
 			end)
 		end
 	end)
 
-	UtilityModule.UIObject:Corner(ItemContainer, UDim.new(0, 4))
-	UtilityModule.UIObject:Corner(DropdownButton, UDim.new(0, 4))
-	UtilityModule.UIObject:Corner(ActionButton, UDim.new(0, 6))
-	UtilityModule.UIObject:List(ItemContainer, UDim.new(0, 0), Enum.FillDirection.Vertical, "TC")
+	UtilityModule.UIObject:Corner(NewDropdown.ItemContainer, UDim.new(0, 4))
+	UtilityModule.UIObject:Corner(NewDropdown.DropdownButton, UDim.new(0, 4))
+	UtilityModule.UIObject:Corner(NewDropdown.ActionButton, UDim.new(0, 6))
+	UtilityModule.UIObject:List(NewDropdown.ItemContainer, UDim.new(0, 0), Enum.FillDirection.Vertical, "TC")
+
+	return NewDropdown
 end
 
 function TabClass:NewColorWheel(Name:string, Action)
@@ -1674,6 +1687,164 @@ function TabClass:NewGap(Length)
 	ActionFrame.BackgroundTransparency = 1
 	ActionFrame.BorderSizePixel = 0
 end
+
+
+-- Dropdown Class
+
+function DropdownClass:ChangeItems(Items)
+	for ItemButtonI, ItemButton in pairs(self.ItemContainer:GetChildren()) do
+		if ItemButton:IsA("TextButton") then
+			ItemButton:Destroy()
+		end
+	end
+
+	for ItemI, Item in pairs(Items) do
+		local NewItemButton = Instance.new("TextButton")
+
+		NewItemButton.Parent = self.ItemContainer
+		NewItemButton.Name = "ItemButton"
+		NewItemButton.Size = UDim2.new(0.95, 0, 0, 12)
+		NewItemButton.BackgroundColor3 = Color3.new(1, 1, 1)
+		NewItemButton.BackgroundTransparency = 1
+		NewItemButton.BorderSizePixel = 0
+		NewItemButton.AutoButtonColor = false
+		NewItemButton.TextScaled = true
+		NewItemButton.TextColor3 = Color3.new(1, 1, 1)
+		NewItemButton.Text = Item
+		NewItemButton.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+
+		NewItemButton.MouseEnter:Connect(function()
+			TweenService:Create(NewItemButton, AnimateInfos.ActionSelect, {
+				BackgroundTransparency = 0.9;
+			}):Play()
+		end)
+
+		NewItemButton.MouseLeave:Connect(function()
+			TweenService:Create(NewItemButton, AnimateInfos.ActionSelect, {
+				BackgroundTransparency = 1;
+			}):Play()
+		end)
+
+		NewItemButton.Activated:Connect(function()
+			self.DropdownOpen = false
+
+			self.DropdownAction(Item, false)
+
+			self.DropdownButton.ItemText.Text = Item
+
+			TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
+				Size = UDim2.fromScale(1, 0);
+			}):Play()
+
+			TweenService:Create(self.DropdownButton.ItemText, AnimateInfos.DropdownContainer, {
+				Rotation = 0;
+			}):Play()
+
+			task.spawn(function()
+				task.wait(AnimateInfos.DropdownContainer.Time)
+
+				self.ActionButton.ZIndex = 1
+				self.ItemContainer.ZIndex = 1
+			end)
+		end)
+	end
+
+	if self.DropdownOpen == true then
+		local OffsetY = (#self.ItemContainer:GetChildren() - 2) * 12.25
+
+		TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
+			Size = UDim2.new(1, 0, 0, OffsetY);
+		}):Play()
+	end
+end
+
+function DropdownClass:AddItem(Item:string)
+	local NewItemButton = Instance.new("TextButton")
+
+	NewItemButton.Parent = self.ItemContainer
+	NewItemButton.Name = "ItemButton"
+	NewItemButton.Size = UDim2.new(0.95, 0, 0, 12)
+	NewItemButton.BackgroundColor3 = Color3.new(1, 1, 1)
+	NewItemButton.BackgroundTransparency = 1
+	NewItemButton.BorderSizePixel = 0
+	NewItemButton.AutoButtonColor = false
+	NewItemButton.TextScaled = true
+	NewItemButton.TextColor3 = Color3.new(1, 1, 1)
+	NewItemButton.Text = Item
+	NewItemButton.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
+
+	NewItemButton.MouseEnter:Connect(function()
+		TweenService:Create(NewItemButton, AnimateInfos.ActionSelect, {
+			BackgroundTransparency = 0.9;
+		}):Play()
+	end)
+
+	NewItemButton.MouseLeave:Connect(function()
+		TweenService:Create(NewItemButton, AnimateInfos.ActionSelect, {
+			BackgroundTransparency = 1;
+		}):Play()
+	end)
+
+	NewItemButton.Activated:Connect(function()
+		self.DropdownOpen = false
+
+		self.DropdownAction(Item, false)
+
+		self.DropdownButton.ItemText.Text = Item
+
+		TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
+			Size = UDim2.fromScale(1, 0);
+		}):Play()
+
+		TweenService:Create(self.DropdownButton.ItemText, AnimateInfos.DropdownContainer, {
+			Rotation = 0;
+		}):Play()
+
+		task.spawn(function()
+			task.wait(AnimateInfos.DropdownContainer.Time)
+
+			self.ActionButton.ZIndex = 1
+			self.ItemContainer.ZIndex = 1
+		end)
+	end)
+
+	if self.DropdownOpen == true then
+		local OffsetY = (#self.ItemContainer:GetChildren() - 2) * 12.25
+
+		TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
+			Size = UDim2.new(1, 0, 0, OffsetY);
+		}):Play()
+	end
+end
+
+function DropdownClass:RemoveItem(Item:string)
+	local Index = tonumber(Item)
+
+	if Index == nil then
+		for ItemButtonI, ItemButton in pairs(self.ItemContainer:GetChildren()) do
+			if ItemButton:IsA("TextButton") and ItemButton.Text == Item then
+				ItemButton:Destroy()
+			end
+		end
+	else
+		local Item = self.ItemContainer:GetChildren()[Index + 2]
+
+		if Item then
+			if Item:IsA("TextButton") then
+				Item:Destroy()
+			end
+		end
+	end
+
+	if self.DropdownOpen == true then
+		local OffsetY = (#self.ItemContainer:GetChildren() - 2) * 12.25
+
+		TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
+			Size = UDim2.new(1, 0, 0, OffsetY);
+		}):Play()
+	end
+end
+
 
 -- Deprecated methods
 
