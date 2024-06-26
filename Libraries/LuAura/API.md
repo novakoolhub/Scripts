@@ -58,7 +58,7 @@ Window:Notify("Success", "The UI has loaded successfully.")
 The first argument is the title of the notification, keep in mind that the word "LuAura: " will be behind the title, so the code above will result in the title being "LuAura: Success".
 The second argument is the description of the notification.
 
-Be warned, the notification system isn't perfect and has some bugs.
+**Be warned, the notification system isn't perfect and has some bugs.**
 
 ## Destroy method
 
