@@ -263,7 +263,7 @@ second argument controls if the items will be sorted alphabetically or not.
 To add a new item to the dropdown, use the **AddItem** method, example:
 
 ``` lua
-Dropdown:AddItem("New Item")
+Dropdown:AddItem("New Item", true)
 ```
 
 First argument is the new item name,
