@@ -150,7 +150,7 @@ The first argument of the function will return the value of the slider.
 To create a new dropdown object in a tab, use the **NewDropdown** method, example:
 
 ``` lua
-local Dropdown = Tab:NewDropdown("Teleport to place", {"Home", "Island", "Forest"}, nil, function(Item, Clicked)
+local Dropdown = Tab:NewDropdown("Teleport to place", {"Home", "Island", "Forest"}, nil, true, function(Item, Clicked)
 	local RootPart = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 
 	if Clicked == false then
@@ -176,7 +176,8 @@ end)
 The first argument is the name/title of the action,
 the second argument is all the items/things that can be selected,
 the third argument is the default item/thing selected (if set to nil then the selected will be "None"),
-the fourth argument is the function that will be executed when clicking the frame or when selecting an item/thing.
+the fourth argument controls if the items will be sorted alphabetically or not,
+the fifth argument is the function that will be executed when clicking the frame or when selecting an item/thing.
 
 The first argument of the function will return what item/thing has been selected,
 the second argument of the function will return whether the frame has been clicked or an item/thing has been selected (if its true, then the frame has been clicked, if its false, then an item has been selected).
@@ -236,6 +237,12 @@ The first argument is the length of the gap.
 
 # DropdownClass
 
+The dropdown class has properties like:
+1. Action: The function to be executed.
+2. Items: The list of all available items in the dropdown.
+3. Selected: The current selected item in the dropdown.
+4. Open: Whether the dropdown is open or not.
+
 ## ChangeItems method
 
 To change dropdown items, use the **ChangeItems** method, example:
@@ -245,10 +252,11 @@ Dropdown:ChangeItems({
 	"Change 1";
 	"Change 2";
 	"Change 3";
-})
+}, true)
 ```
 
-First argument is the new items table.
+First argument is the new items table,
+second argument controls if the items will be sorted alphabetically or not.
 
 ## AddItem method
 
@@ -258,7 +266,8 @@ To add a new item to the dropdown, use the **AddItem** method, example:
 Dropdown:AddItem("New Item")
 ```
 
-First argument is the new item name.
+First argument is the new item name,
+second argument controls if the item will be sorted alphabetically or not.
 
 ## RemoveItem method
 
