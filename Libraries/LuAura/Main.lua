@@ -1156,23 +1156,29 @@ function TabClass:NewSlider(Name:string, Min:number, Max:number, Steps:number, A
 	UtilityModule.UIObject:Corner(ActionFrame, UDim.new(0, 6))
 end
 
-function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
+function TabClass:NewDropdown(Name:string, Items, AutoSelected, Sort, Action)
 	local NewDropdown = setmetatable({}, DropdownClass)
 
-	NewDropdown.DropdownAction = Action
-	NewDropdown.ActionButton = Instance.new("TextButton")
-	NewDropdown.DropdownButton = Instance.new("TextButton")
 	NewDropdown.Config = self.Config
 
-	local DropdownButtonText = Instance.new("TextLabel")
-	local DropdownButtonIcon = Instance.new("ImageLabel")
+	NewDropdown.ActionButton = Instance.new("TextButton")
+	NewDropdown.DropdownButton = Instance.new("TextButton")
 	NewDropdown.ItemContainer = Instance.new("Frame")
 
-	local Hovering = false
+	NewDropdown.Action = Action
+	NewDropdown.Items = Items
+	NewDropdown.Selected = AutoSelected or "None"
+	NewDropdown.Open = false
 
 	local DefaultColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(15, 15, 15))
 	local HoverColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(25, 25, 25))
 	local ActivateColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(35, 35, 35))
+
+	local DropdownDefaultColor = self.Config.Theme
+	local DropdownHoverColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(15, 15, 15))
+
+	local IconImage = Instance.new("ImageLabel")
+	local TitleText = Instance.new("TextLabel")
 
 	NewDropdown.ActionButton.Parent = self.TabPage.ActionContainer
 	NewDropdown.ActionButton.Name = "DropdownAction"
@@ -1182,9 +1188,6 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	NewDropdown.ActionButton.BorderSizePixel = 0
 	NewDropdown.ActionButton.AutoButtonColor = false
 	NewDropdown.ActionButton.Text = ""
-
-	local IconImage = Instance.new("ImageLabel")
-	local TitleText = Instance.new("TextLabel")
 
 	IconImage.Parent = NewDropdown.ActionButton
 	IconImage.Name = "ActionIcon"
@@ -1208,43 +1211,41 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	TitleText.TextColor3 = Color3.new(1, 1, 1)
 	TitleText.Text = Name
 	TitleText.TextXAlignment = Enum.TextXAlignment.Left
-	TitleText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+	TitleText.FontFace = Font.new(NewDropdown.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 
-	local DropdownDefaultColor = self.Config.Theme
-	local DropdownHoverColor = UtilityModule.Color:Add(self.Config.Theme, Color3.fromRGB(15, 15, 15))
+	local DropdownText = Instance.new("TextLabel")
+	local DropdownIcon = Instance.new("ImageLabel")
 
 	NewDropdown.DropdownButton.Parent = NewDropdown.ActionButton
 	NewDropdown.DropdownButton.Name = "DropdownButton"
 	NewDropdown.DropdownButton.Position = UDim2.fromScale(0.675, 0.5)
 	NewDropdown.DropdownButton.AnchorPoint = Vector2.new(0, 0.5)
 	NewDropdown.DropdownButton.Size = UDim2.fromScale(0.3, 0.65)
-	NewDropdown.DropdownButton.BackgroundColor3 = self.Config.Theme
+	NewDropdown.DropdownButton.BackgroundColor3 = NewDropdown.Config.Theme
 	NewDropdown.DropdownButton.BorderSizePixel = 0
 	NewDropdown.DropdownButton.AutoButtonColor = false
 	NewDropdown.DropdownButton.Text = ""
 
-	DropdownButtonText.Parent = NewDropdown.DropdownButton
-	DropdownButtonText.Name = "ItemText"
-	DropdownButtonText.Position = UDim2.fromScale(0.05, 0.5)
-	DropdownButtonText.AnchorPoint = Vector2.new(0, 0.5)
-	DropdownButtonText.Size = UDim2.fromScale(0.7, 0.75)
-	DropdownButtonText.BackgroundTransparency = 1
-	DropdownButtonText.TextScaled = true
-	DropdownButtonText.TextColor3 = Color3.new(1, 1, 1)
-	DropdownButtonText.Text = AutoSelected or "None"
-	DropdownButtonText.TextXAlignment = Enum.TextXAlignment.Left
-	DropdownButtonText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+	DropdownText.Parent = NewDropdown.DropdownButton
+	DropdownText.Name = "ItemText"
+	DropdownText.Position = UDim2.fromScale(0.05, 0.5)
+	DropdownText.AnchorPoint = Vector2.new(0, 0.5)
+	DropdownText.Size = UDim2.fromScale(0.7, 0.75)
+	DropdownText.BackgroundTransparency = 1
+	DropdownText.TextScaled = true
+	DropdownText.TextColor3 = Color3.new(1, 1, 1)
+	DropdownText.Text = NewDropdown.Selected
+	DropdownText.TextXAlignment = Enum.TextXAlignment.Left
+	DropdownText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 
-	DropdownButtonIcon.Parent = NewDropdown.DropdownButton
-	DropdownButtonIcon.Name = "DropdownIcon"
-	DropdownButtonIcon.Position = UDim2.fromScale(0.85, 0.5)
-	DropdownButtonIcon.AnchorPoint = Vector2.new(0, 0.5)
-	DropdownButtonIcon.Size = UDim2.fromScale(0.125, 0.7)
-	DropdownButtonIcon.BackgroundTransparency = 1
-	DropdownButtonIcon.BorderSizePixel = 0
-	DropdownButtonIcon.Image = "rbxassetid://17352538452"
-
-	NewDropdown.DropdownOpen = false
+	DropdownIcon.Parent = NewDropdown.DropdownButton
+	DropdownIcon.Name = "DropdownIcon"
+	DropdownIcon.Position = UDim2.fromScale(0.85, 0.5)
+	DropdownIcon.AnchorPoint = Vector2.new(0, 0.5)
+	DropdownIcon.Size = UDim2.fromScale(0.125, 0.7)
+	DropdownIcon.BackgroundTransparency = 1
+	DropdownIcon.BorderSizePixel = 0
+	DropdownIcon.Image = "rbxassetid://17352538452"
 
 	NewDropdown.ItemContainer.Parent = NewDropdown.DropdownButton
 	NewDropdown.ItemContainer.Name = "ItemContainer"
@@ -1254,11 +1255,14 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	NewDropdown.ItemContainer.BorderSizePixel = 0
 	NewDropdown.ItemContainer.BackgroundColor3 = self.Config.Theme
 
-	for ItemI, Item in pairs(Items) do
+	UtilityModule.UIObject:Corner(NewDropdown.ItemContainer, UDim.new(0, 4))
+	UtilityModule.UIObject:List(NewDropdown.ItemContainer, UDim.new(0, 0), Enum.FillDirection.Vertical, "TC")
+
+	for ItemI, Item in pairs(NewDropdown.Items) do
 		local NewItemButton = Instance.new("TextButton")
 
 		NewItemButton.Parent = NewDropdown.ItemContainer
-		NewItemButton.Name = "ItemButton"
+		NewItemButton.Name = if Sort == true then Item.." Item" else "ItemButton"
 		NewItemButton.Size = UDim2.new(0.95, 0, 0, 12)
 		NewItemButton.BackgroundColor3 = Color3.new(1, 1, 1)
 		NewItemButton.BackgroundTransparency = 1
@@ -1282,17 +1286,18 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 		end)
 
 		NewItemButton.Activated:Connect(function()
-			NewDropdown.DropdownOpen = false
+			NewDropdown.Open = false
 
-			Action(Item, false)
+			NewDropdown.Action(Item, false)
 
-			DropdownButtonText.Text = Item
+			NewDropdown.Selected = Item
+			DropdownText.Text = Item
 
 			TweenService:Create(NewDropdown.ItemContainer, AnimateInfos.DropdownContainer, {
 				Size = UDim2.fromScale(1, 0);
 			}):Play()
 
-			TweenService:Create(DropdownButtonIcon, AnimateInfos.DropdownContainer, {
+			TweenService:Create(DropdownIcon, AnimateInfos.DropdownContainer, {
 				Rotation = 0;
 			}):Play()
 
@@ -1304,6 +1309,8 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 			end)
 		end)
 	end
+
+	local Hovering = false
 
 	NewDropdown.ActionButton.MouseEnter:Connect(function()
 		Hovering = true
@@ -1322,7 +1329,7 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	end)
 
 	NewDropdown.ActionButton.Activated:Connect(function()
-		Action(DropdownButtonText.Text, true)
+		NewDropdown.Action(NewDropdown.Selected, true)
 
 		TweenService:Create(NewDropdown.ActionButton, AnimateInfos.ActionSelect, {
 			BackgroundColor3 = ActivateColor;
@@ -1362,8 +1369,8 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 	end)
 
 	NewDropdown.DropdownButton.Activated:Connect(function()
-		if NewDropdown.DropdownOpen == false then
-			NewDropdown.DropdownOpen = true
+		if NewDropdown.Open == false then
+			NewDropdown.Open = true
 
 			NewDropdown.ActionButton.ZIndex = 10
 			NewDropdown.ItemContainer.ZIndex = 10
@@ -1374,17 +1381,17 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 				Size = UDim2.new(1, 0, 0, OffsetY);
 			}):Play()
 
-			TweenService:Create(DropdownButtonIcon, AnimateInfos.DropdownContainer, {
+			TweenService:Create(DropdownIcon, AnimateInfos.DropdownContainer, {
 				Rotation = 180;
 			}):Play()
 		else
-			NewDropdown.DropdownOpen = false
+			NewDropdown.Open = false
 
 			TweenService:Create(NewDropdown.ItemContainer, AnimateInfos.DropdownContainer, {
 				Size = UDim2.fromScale(1, 0);
 			}):Play()
 
-			TweenService:Create(DropdownButtonIcon, AnimateInfos.DropdownContainer, {
+			TweenService:Create(DropdownIcon, AnimateInfos.DropdownContainer, {
 				Rotation = 0;
 			}):Play()
 
@@ -1397,10 +1404,8 @@ function TabClass:NewDropdown(Name:string, Items, AutoSelected, Action)
 		end
 	end)
 
-	UtilityModule.UIObject:Corner(NewDropdown.ItemContainer, UDim.new(0, 4))
 	UtilityModule.UIObject:Corner(NewDropdown.DropdownButton, UDim.new(0, 4))
 	UtilityModule.UIObject:Corner(NewDropdown.ActionButton, UDim.new(0, 6))
-	UtilityModule.UIObject:List(NewDropdown.ItemContainer, UDim.new(0, 0), Enum.FillDirection.Vertical, "TC")
 
 	return NewDropdown
 end
@@ -1691,7 +1696,7 @@ end
 
 -- Dropdown Class
 
-function DropdownClass:ChangeItems(Items)
+function DropdownClass:ChangeItems(Items, Sort)
 	for ItemButtonI, ItemButton in pairs(self.ItemContainer:GetChildren()) do
 		if ItemButton:IsA("TextButton") then
 			ItemButton:Destroy()
@@ -1702,7 +1707,7 @@ function DropdownClass:ChangeItems(Items)
 		local NewItemButton = Instance.new("TextButton")
 
 		NewItemButton.Parent = self.ItemContainer
-		NewItemButton.Name = "ItemButton"
+		NewItemButton.Name = if Sort == true then Item.." Item" else "ItemButton"
 		NewItemButton.Size = UDim2.new(0.95, 0, 0, 12)
 		NewItemButton.BackgroundColor3 = Color3.new(1, 1, 1)
 		NewItemButton.BackgroundTransparency = 1
@@ -1726,17 +1731,18 @@ function DropdownClass:ChangeItems(Items)
 		end)
 
 		NewItemButton.Activated:Connect(function()
-			self.DropdownOpen = false
+			self.Open = false
 
-			self.DropdownAction(Item, false)
+			self.Action(Item, false)
 
+			self.Selected = Item
 			self.DropdownButton.ItemText.Text = Item
 
 			TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
 				Size = UDim2.fromScale(1, 0);
 			}):Play()
 
-			TweenService:Create(self.DropdownButton.ItemText, AnimateInfos.DropdownContainer, {
+			TweenService:Create(self.DropdownButton.DropdownIcon, AnimateInfos.DropdownContainer, {
 				Rotation = 0;
 			}):Play()
 
@@ -1749,7 +1755,9 @@ function DropdownClass:ChangeItems(Items)
 		end)
 	end
 
-	if self.DropdownOpen == true then
+	self.Items = Items
+
+	if self.Open == true then
 		local OffsetY = (#self.ItemContainer:GetChildren() - 2) * 12.25
 
 		TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
@@ -1758,11 +1766,11 @@ function DropdownClass:ChangeItems(Items)
 	end
 end
 
-function DropdownClass:AddItem(Item:string)
+function DropdownClass:AddItem(Item:string, Sort)
 	local NewItemButton = Instance.new("TextButton")
 
 	NewItemButton.Parent = self.ItemContainer
-	NewItemButton.Name = "ItemButton"
+	NewItemButton.Name = if Sort == true then Item.." Item" else "ItemButton"
 	NewItemButton.Size = UDim2.new(0.95, 0, 0, 12)
 	NewItemButton.BackgroundColor3 = Color3.new(1, 1, 1)
 	NewItemButton.BackgroundTransparency = 1
@@ -1786,17 +1794,18 @@ function DropdownClass:AddItem(Item:string)
 	end)
 
 	NewItemButton.Activated:Connect(function()
-		self.DropdownOpen = false
+		self.Open = false
 
-		self.DropdownAction(Item, false)
+		self.Action(Item, false)
 
+		self.Selected = Item
 		self.DropdownButton.ItemText.Text = Item
 
 		TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
 			Size = UDim2.fromScale(1, 0);
 		}):Play()
 
-		TweenService:Create(self.DropdownButton.ItemText, AnimateInfos.DropdownContainer, {
+		TweenService:Create(self.DropdownButton.DropdownIcon, AnimateInfos.DropdownContainer, {
 			Rotation = 0;
 		}):Play()
 
@@ -1808,7 +1817,9 @@ function DropdownClass:AddItem(Item:string)
 		end)
 	end)
 
-	if self.DropdownOpen == true then
+	table.insert(self.Items, Item)
+
+	if self.Open == true then
 		local OffsetY = (#self.ItemContainer:GetChildren() - 2) * 12.25
 
 		TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
@@ -1823,10 +1834,14 @@ function DropdownClass:RemoveItem(Item:string)
 	if Index == nil then
 		for ItemButtonI, ItemButton in pairs(self.ItemContainer:GetChildren()) do
 			if ItemButton:IsA("TextButton") and ItemButton.Text == Item then
+				table.remove(self.Items, table.find(self.Items, Item))
+
 				ItemButton:Destroy()
 			end
 		end
 	else
+		table.remove(self.Items, Index)
+
 		local Item = self.ItemContainer:GetChildren()[Index + 2]
 
 		if Item then
@@ -1834,9 +1849,9 @@ function DropdownClass:RemoveItem(Item:string)
 				Item:Destroy()
 			end
 		end
-	end
+	end	
 
-	if self.DropdownOpen == true then
+	if self.Open == true then
 		local OffsetY = (#self.ItemContainer:GetChildren() - 2) * 12.25
 
 		TweenService:Create(self.ItemContainer, AnimateInfos.DropdownContainer, {
