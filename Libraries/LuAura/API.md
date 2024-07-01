@@ -52,11 +52,12 @@ the second argument is the tab icon ID (this is optional), make sure you copied 
 You can send notifications using the **Notify** method, example:
 
 ``` lua
-Window:Notify("Success", "The UI has loaded successfully.")
+Window:Notify("Success", "The UI has loaded successfully.", 5)
 ```
 
-The first argument is the title of the notification, keep in mind that the word "LuAura: " will be behind the title, so the code above will result in the title being "LuAura: Success".
-The second argument is the description of the notification.
+The first argument is the title of the notification, keep in mind that the word "LuAura: " will be behind the title, so the code above will result in the title being "LuAura: Success",
+the second argument is the description of the notification,
+the third argument is the amount of time the notification will stay on screen (will be set to 3 seconds if not provided).
 
 **Be warned, the notification system isn't perfect and has some bugs.**
 
