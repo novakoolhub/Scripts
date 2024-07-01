@@ -559,6 +559,7 @@ function WindowClass:Notify(Title:string, Description:string, Time:number, Optio
 	DescriptionText.BackgroundTransparency = 1
 	DescriptionText.BorderSizePixel = 0
 	DescriptionText.TextScaled = true
+	DescriptionText.RichText = true
 	DescriptionText.TextColor3 = Color3.new(1, 1, 1)
 	DescriptionText.Text = Description
 	DescriptionText.FontFace = Font.new(self.Config.Font, Enum.FontWeight.Medium, Enum.FontStyle.Normal)
