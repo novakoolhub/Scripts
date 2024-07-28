@@ -87,7 +87,7 @@ function Module.Align:Draggable(GuiObject:GuiObject, DragObject:GuiObject, Smoot
 
 	local DragLoop = RunService.RenderStepped:Connect(function()
 		if Holding == true then
-			local DragPosition = InputService:GetMouseLocation() - HoldPosition + Vector2.new(0, 58)
+			local DragPosition = InputService:GetMouseLocation() - HoldPosition + Vector2.new(0, 25)
 			DragUDim = UDim2.fromOffset(DragPosition.X, DragPosition.Y)
 		end
 
