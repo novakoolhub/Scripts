@@ -51,7 +51,7 @@ function Module.Align:Draggable(GuiObject:GuiObject, DragObject:GuiObject, Smoot
 	-- Arguments
 
 	DragObject = DragObject or GuiObject
-
+	
 	Smoothness = Smoothness or 0.9
 	Smoothness = math.clamp(Smoothness, 0, 90)
 	Smoothness = Smoothness / 100
@@ -82,15 +82,15 @@ function Module.Align:Draggable(GuiObject:GuiObject, DragObject:GuiObject, Smoot
 			Holding = false
 		end
 	end)
-
+	
 	local DragUDim = GuiObject.Position
 
 	local DragLoop = RunService.RenderStepped:Connect(function()
 		if Holding == true then
-			local DragPosition = InputService:GetMouseLocation() - HoldPosition + Vector2.new(0, 25)
+			local DragPosition = InputService:GetMouseLocation() - HoldPosition + Vector2.new(0, 58)
 			DragUDim = UDim2.fromOffset(DragPosition.X, DragPosition.Y)
 		end
-
+			
 		GuiObject.Position = GuiObject.Position:Lerp(DragUDim, 1 - Smoothness)
 	end)
 
@@ -101,18 +101,18 @@ end
 
 function Module.UIObject:Stroke(GuiObject:GuiObject, Thickness:number, Color:Color3)
 	local NewStroke = Instance.new("UIStroke", GuiObject)
-
+	
 	NewStroke.Thickness = Thickness
 	NewStroke.Color = Color
-
+	
 	return NewStroke
 end
 
 function Module.UIObject:Scale(GuiObject:GuiObject, Scale:number)
 	local NewScale = Instance.new("UIScale", GuiObject)
-
+	
 	NewScale.Scale = Scale
-
+	
 	return NewScale
 end
 
@@ -126,10 +126,10 @@ end
 
 function Module.UIObject:ClampTextSize(GuiObject:GuiObject, Min:number, Max:number)
 	local NewTextClamp = Instance.new("UITextSizeConstraint", GuiObject)
-
+	
 	NewTextClamp.MinTextSize = Min
 	NewTextClamp.MaxTextSize = Max
-
+	
 	return NewTextClamp
 end
 
@@ -199,14 +199,14 @@ end
 
 function Module.UIObject:FadeGradient(GuiObject:GuiObject, EndTransparency:number, Direction:string)
 	-- Arguments
-
+	
 	EndTransparency = EndTransparency or 1
 	Direction = Direction or "TOP"
-
+	
 	-- Function
-
+	
 	local NewGradient = Instance.new("UIGradient")
-
+	
 	NewGradient.Parent = GuiObject
 	NewGradient.Transparency = NumberSequence.new({
 		NumberSequenceKeypoint.new(0, 0, 0);
@@ -312,7 +312,7 @@ function Module.Color:Add(ColorA, ColorB)
 	local R1, G1, B1 = ColorA.R * 255, ColorA.G * 255, ColorA.B * 255
 	local R2, G2, B2 = ColorB.R * 255, ColorB.G * 255, ColorB.B * 255
 	local R, G, B = math.max(R1 + R2, 0), math.max(G1 + G2, 0), math.max(B1 + B2, 0)
-
+	
 	return Color3.fromRGB(R, G, B)
 end
 
