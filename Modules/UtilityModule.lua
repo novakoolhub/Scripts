@@ -71,14 +71,14 @@ function Module.Align:Draggable(GuiObject:GuiObject, DragObject:GuiObject, Smoot
 	end)
 
 	InputService.InputBegan:Connect(function(Input)
-		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch and Hovering then
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 and Hovering then
 			HoldPosition = (InputService:GetMouseLocation() - GuiObject.AbsolutePosition) - (GuiObject.AbsoluteSize * GuiObject.AnchorPoint)
 			Holding = true
 		end
 	end)
 
 	InputService.InputEnded:Connect(function(Input)
-		if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+		if Input.UserInputType == Enum.UserInputType.MouseButton1 then
 			Holding = false
 		end
 	end)
@@ -87,7 +87,7 @@ function Module.Align:Draggable(GuiObject:GuiObject, DragObject:GuiObject, Smoot
 
 	local DragLoop = RunService.RenderStepped:Connect(function()
 		if Holding == true then
-			local DragPosition = InputService:GetMouseLocation() - HoldPosition + Vector2.new(0, 10)
+			local DragPosition = InputService:GetMouseLocation() - HoldPosition + Vector2.new(0, 58)
 			DragUDim = UDim2.fromOffset(DragPosition.X, DragPosition.Y)
 		end
 			
