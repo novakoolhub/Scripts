@@ -1173,7 +1173,9 @@ function TabClass:NewButton(Config)
 		}):Play()
 		
 		if NewButton.Action then
-			NewButton.Action(Count)
+			task.spawn(function()
+				NewButton.Action(Count)
+			end)
 		end
 		
 		task.wait(0.25)
@@ -1312,7 +1314,9 @@ function TabClass:NewToggle(Config)
 		NewToggle:Set(OppositeState)
 		
 		if NewToggle.Action then
-			NewToggle.Action(OppositeState, Count)
+			task.spawn(function()
+				NewToggle.Action(OppositeState, Count)
+			end)
 		end
 
 		task.wait(0.25)
@@ -1334,7 +1338,9 @@ function TabClass:NewToggle(Config)
 		NewToggle:Set(OppositeState)
 
 		if NewToggle.Action then
-			NewToggle.Action(OppositeState, Count)
+			task.spawn(function()
+				NewToggle.Action(OppositeState, Count)
+			end)
 		end
 	end)
 	
@@ -1392,7 +1398,9 @@ function TabClass:NewInput(Config)
 		}):Play()
 
 		if NewInput.Action then
-			NewInput.Action(NewInput.InputBox.Text, true, Count)
+			task.spawn(function()
+				NewInput.Action(NewInput.InputBox.Text, true, Count)
+			end)
 		end
 
 		task.wait(0.25)
@@ -1461,7 +1469,9 @@ function TabClass:NewInput(Config)
 		end
 		
 		if NewInput.Action then
-			NewInput.Action(NewInput.InputBox.Text, Enter)
+			task.spawn(function()
+				NewInput.Action(NewInput.InputBox.Text, Enter)
+			end)
 		end
 	end)
 	
@@ -1532,7 +1542,9 @@ function TabClass:NewSlider(Config)
 		}):Play()
 
 		if NewSlider.Action then
-			NewSlider.Action(NewSlider.Value, Count)
+			task.spawn(function()
+				NewSlider.Action(NewSlider.Value, Count)
+			end)
 		end
 
 		task.wait(0.25)
@@ -1755,7 +1767,9 @@ function TabClass:NewDropdown(Config)
 		}):Play()
 
 		if NewDropdown.Action then
-			NewDropdown.Action(NewDropdown.Value, Count)
+			task.spawn(function()
+				NewDropdown.Action(NewDropdown.Value, Count)
+			end)
 		end
 		
 		task.wait(0.25)
@@ -1867,7 +1881,9 @@ function TabClass:NewDropdown(Config)
 			NewDropdown:Set(Item)
 			
 			if NewDropdown.Action then
-				NewDropdown.Action(Item)
+				task.spawn(function()
+					NewDropdown.Action(Item)
+				end)
 			end
 			
 			TweenService:Create(NewDropdown.DropdownContainer, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
@@ -2150,7 +2166,9 @@ function DropdownClass:Change(NewItems)
 			self:Set(Item)
 
 			if self.Action then
-				self.Action(Item)
+				task.spawn(function()
+					self.Action(Item)
+				end)
 			end
 
 			TweenService:Create(self.DropdownContainer, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
@@ -2181,7 +2199,9 @@ function DropdownClass:Add(Item, ItemName)
 		self:Set(Item)
 
 		if self.Action then
-			self.Action(Item)
+			task.spawn(function()
+				self.Action(Item)
+			end)
 		end
 
 		TweenService:Create(self.DropdownContainer, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.InOut), {
