@@ -1898,6 +1898,8 @@ function TabClass:NewDropdown(Config)
 				Transparency = 1;
 			}):Play()
 			
+			NewDropdown.ActionButton.ZIndex = 2
+			
 			NewDropdown.Open = false
 		end)
 	end
