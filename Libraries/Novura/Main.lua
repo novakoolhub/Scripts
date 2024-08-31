@@ -941,7 +941,7 @@ function WindowClass:ChangeTab(NewTab)
 	}):Play()
 end
 
-function WindowClass:Notify(Title, Description, Options, Time)
+function WindowClass:Notify(Title, Description, Time, Options)
 	local NotificationFrame = Instance.new("Frame")
 	local TitleText = Instance.new("TextLabel")
 	local DividerLine = Instance.new("Frame")
