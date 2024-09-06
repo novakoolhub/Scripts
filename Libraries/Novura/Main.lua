@@ -787,7 +787,7 @@ function WindowClass:New(Config)
 	NewWindow.TabContainer.Parent = NewWindow.MenuFrame
 	NewWindow.TabContainer.Name = "TabContainer"
 	NewWindow.TabContainer.Position = UDim2.new(0, 10, 0, 50)
-	NewWindow.TabContainer.Size = UDim2.fromScale(0.85, 0.6)
+	NewWindow.TabContainer.Size = UDim2.fromScale(0.85, 0.665)
 	NewWindow.TabContainer.BackgroundTransparency = 1
 	NewWindow.TabContainer.BorderSizePixel = 0
 	NewWindow.TabContainer.CanvasSize = UDim2.fromOffset(0, 20)
@@ -838,7 +838,7 @@ function WindowClass:NewTab(Config)
 	NewTab.TabButton = Instance.new("TextButton")
 	NewTab.TabButton.Parent = self.TabContainer
 	NewTab.TabButton.Name = (NewTab.Config.Name or "Tab").."Button"
-	NewTab.TabButton.Size = UDim2.new(1, 0, 0, 25)
+	NewTab.TabButton.Size = UDim2.new(0.95, 0, 0, 25)
 	NewTab.TabButton.AutoButtonColor = false
 	NewTab.TabButton.Text = ""
 	NewTab.TabButton.BackgroundColor3 = Color3.new(1, 1, 1)
