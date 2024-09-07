@@ -1,3 +1,5 @@
+# WARNING, IF SOMEONE HAS ACCESS TO YOUR IP THEY COULD LOG ALL YOUR KEYS, PLEASE BE CAREFUL WHILE USING
+
 # How to setup
 
 * Make sure python is installed, you can install it here: https://www.python.org/downloads
