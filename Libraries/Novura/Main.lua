@@ -605,7 +605,7 @@ function WindowClass:New(Config)
 	
 	ContinueButton.Activated:Connect(function(Input, Count)
 		if NewWindow.Config.KeySystem then
-			if KeyBox.Text == NewWindow.Config.KeySystem.Key then
+			if KeyBox.Text:gsub(" ", "") == NewWindow.Config.KeySystem.Key then
 				NewWindow:PopupNotify('Key was <font color="rgb(75,255,75)">correct</font>!', 2)
 
 				NewWindow.HomeLocked = false
