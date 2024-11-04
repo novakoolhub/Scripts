@@ -2082,6 +2082,12 @@ function ToggleClass:Set(NewValue)
 			Rotation = 135;
 		}):Play()
 	end
+
+	if self.Action then
+		task.spawn(function()
+			self.Action(NewValue)
+		end)
+	end
 end
 
 function ToggleClass:Destroy()
@@ -2106,6 +2112,12 @@ function InputClass:Set(NewValue)
 			Rotation = 90;
 		}):Play()
 	end
+
+	if self.Action then
+		task.spawn(function()
+			self.Action(NewValue)
+		end)
+	end
 end
 
 function InputClass:Destroy()
@@ -2126,6 +2138,12 @@ function SliderClass:Set(NewValue)
 	TweenService:Create(self.PickerFrame, TweenInfo.new(0.1, Enum.EasingStyle.Quad), {
 		Position = UDim2.fromScale(Precentage, 0.5);
 	}):Play()
+
+	if self.Action then
+		task.spawn(function()
+			self.Action(NewValue)
+		end)
+	end
 end
 
 function SliderClass:Destroy()
@@ -2142,6 +2160,12 @@ function DropdownClass:Set(NewValue)
 	
 	self.Value = NewValue
 	self.DropdownSelectedText.Text = Name
+
+	if self.Action then
+		task.spawn(function()
+			self.Action(NewValue)
+		end)
+	end
 end
 
 function DropdownClass:Change(NewItems)
