@@ -609,6 +609,10 @@ function WindowClass:New(Config)
 				NewWindow:PopupNotify('Key was <font color="rgb(75,255,75)">correct</font>!', 2)
 
 				NewWindow.HomeLocked = false
+			elseif NewWindow.Config.KeySystem.PermKeys and table.find(NewWindow.Config.KeySystem.PermKeys, KeyBox.Text:gsub(" ", "")) then
+				NewWindow:PopupNotify('<font color="rgb(125,60,255)">Perm</font> key was <font color="rgb(75,255,75)">correct</font>!', 2)
+
+				NewWindow.HomeLocked = false
 			else
 				NewWindow:PopupNotify('Key was <font color="rgb(255,75,75)">incorrect</font>!', 2)
 			end
