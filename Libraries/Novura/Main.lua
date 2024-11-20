@@ -1318,12 +1318,6 @@ function TabClass:NewToggle(Config)
 		}):Play()
 		
 		NewToggle:Set(OppositeState)
-		
-		if NewToggle.Action then
-			task.spawn(function()
-				NewToggle.Action(OppositeState, Count)
-			end)
-		end
 
 		task.wait(0.25)
 
